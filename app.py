@@ -17,5 +17,6 @@ def headlines():
     scored.sort(key=lambda x: x[1], reverse=True)
     return jsonify([a for a, s in scored[:8]])
 
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
