@@ -1,9 +1,16 @@
+import os
+from datetime import datetime
+from dateutil import parser as date_parser
+
 SOURCE_WEIGHTS = {
-    "reuters.com": 10, "apnews.com": 10, "bbc.com": 9,
-    "techcrunch.com": 7, "straitstimes.com": 8, "default": 3
+    "reuters.com": 10, "apnews.com": 10, "bbc.co.uk": 9, "feeds.bbci.co.uk": 9,
+    "techcrunch.com": 7, "straitstimes.com": 8, "timesofindia.indiatimes.com": 6,
+    "abc.net.au": 8, "default": 3
 }
 
-KEYWORDS = ["AI", "cloud", "election", "policy", "cybersecurity"]
+def get_keywords():
+    kw_env = os.environ.get("KEYWORDS", "")
+    return [k.strip().lower() for k in kw_env.split(",") if k.strip()]
 
 def recency_score(published_dt, now):
     hours_old = (now - published_dt).total_seconds() / 3600
@@ -13,12 +20,11 @@ def recency_score(published_dt, now):
     return 0
 
 def keyword_score(title):
-    return sum(2 for kw in KEYWORDS if kw.lower() in title.lower())
+    keywords = get_keywords()
+    title_lower = title.lower()
+    return sum(2 for kw in keywords if kw in title_lower)
 
 def score_article(article, mention_count):
-    from datetime import datetime
-    from dateutil import parser as date_parser
-
     domain = article.get("source", "default")
     title = article.get("title", "")
     published_raw = article.get("published", "")
