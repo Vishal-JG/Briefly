@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 CHAT_IDS = [c.strip() for c in os.environ.get("TELEGRAM_CHAT_IDS", "").split(",") if c.strip()]
-TOP_N = int(os.environ.get("TOP_N", 8))
+TOP_N = int(os.environ.get("TOP_N", 10))
 
 def normalize_title(title):
     return re.sub(r'[^a-z0-9\s]', '', title.lower()).strip()
