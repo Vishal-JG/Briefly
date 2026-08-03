@@ -1,4 +1,4 @@
-name: CI - Build and Push
+name: CI - Build, Push, Deploy
 
 on:
   push:
@@ -36,3 +36,25 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_NAME }}:latest
           platforms: linux/amd64
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Deploy to k3s
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            kubectl set image deployment/briefly briefly=ghcr.io/vishal-jg/briefly:latest
+            kubectl rollout status deployment/briefly
