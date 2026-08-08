@@ -4,5 +4,5 @@ metadata:
   name: briefly-config
 data:
   FEEDS: "http://feeds.bbci.co.uk/news/world/rss.xml,https://techcrunch.com/feed/,https://www.straitstimes.com/rss.xml,https://timesofindia.indiatimes.com/rssfeedstopstories.cms,https://www.abc.net.au/news/feed/51120/rss.xml"
-  TOP_N: "8"
+  TOP_N: "10"
   KEYWORDS: "AI,cloud,election,policy,cybersecurity"
