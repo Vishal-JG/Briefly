@@ -52,4 +52,4 @@ jobs:
       - name: Deploy to k3s via Tailscale SSH
         run: |
           tailscale ssh byteman@bytecave -- \
-            "kubectl set image deployment/briefly briefly=${{ env.IMAGE_NAME }}:latest && kubectl rollout status deployment/briefly"
+          "export KUBECONFIG=/home/byteman/.kube/config && kubectl set image deployment/briefly briefly=${{ env.IMAGE_NAME }}:latest && kubectl rollout status deployment/briefly"
