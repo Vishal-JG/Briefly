@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: briefly-daily-digest
 spec:
-  schedule: "0 7 * * *"
+  schedule: "30 7 * * *"
   timeZone: "Australia/Sydney"
   jobTemplate:
     spec:
