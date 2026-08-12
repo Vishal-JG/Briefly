@@ -49,12 +49,12 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
 
-      - name: Debug Tailscale identity
-        run: |
-          tailscale status
-          tailscale whois $(tailscale ip -4)
-
       - name: Deploy to k3s via Tailscale SSH
         run: |
           tailscale ssh byteman@bytecave -- \
-          "export KUBECONFIG=/home/byteman/.kube/config && kubectl set image deployment/briefly briefly=${{ env.IMAGE_NAME }}:latest && kubectl rollout status deployment/briefly"
+          "cd ~/Briefly && \
+           git pull origin main && \
+           export KUBECONFIG=/home/byteman/.kube/config && \
+           kubectl apply -f . && \
+           kubectl set image deployment/briefly briefly=${{ env.IMAGE_NAME }}:latest && \
+           kubectl rollout status deployment/briefly"
